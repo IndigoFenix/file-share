@@ -1,6 +1,5 @@
-import axios from 'axios';
-
 import React, { Component } from 'react';
+import { uploadFile } from '../services/file';
 
 export interface props {
 }
@@ -29,10 +28,13 @@ class FileUploader extends Component<props, state> {
 
         // Create an object of formData
         const formData = new FormData();
+        formData.set('name',this.state.selectedFile.name);
+        let split = this.state.selectedFile.name.split('.');
+        formData.set('ext',split[split.length - 1]);
 
         // Update the formData object
         formData.append(
-            "uploadedfile",
+            "file",
             this.state.selectedFile,
             this.state.selectedFile.name
         );
@@ -42,12 +44,11 @@ class FileUploader extends Component<props, state> {
         
         // Request made to the backend api
         // Send formData object
-        axios.post("api/uploadfile", formData).then(result=>{
-            console.log(result);
+        uploadFile(formData).then((result)=>{
             this.setState({'uploaded':true,'selectedFile':null})
         }).catch(error=>{
-            console.error(error);
-        });
+
+        })
     };
 
     // File content to be displayed after
