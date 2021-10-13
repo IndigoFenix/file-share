@@ -30,7 +30,7 @@ schema.methods.downloadData = function () {
             if (err) {
                 reject(err.message);
             } else {
-                resolve(data.data);
+                resolve(data);
             }
         })
     });

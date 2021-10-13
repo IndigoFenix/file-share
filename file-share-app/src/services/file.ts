@@ -24,7 +24,7 @@ export function uploadFile(data:any): Promise<{'key':string}>{
     })
 }
 
-export function downloadFile(id:string): Promise<{'name':string,'data':Buffer}>{
+export function downloadFile(id:string): Promise<{'name':string,'data':{'type':string,'data':Buffer}}>{
     return new Promise((resolve,reject)=>{
         axios.get(APIEndpoint+"/file/"+id).then((result:AxiosResponse<any>)=>{
             resolve(result.data);

@@ -15,10 +15,8 @@ class FileUploader extends Component<props, state> {
         this.state = {'selectedFile':null,'uploaded':false,'filekey':null};
     }
 
-    // On file select (from the pop up)
+    // On file select
     onFileChange = (event:any) => {
-        console.log('File change',event);
-        // Update the state
         this.setState({ selectedFile: event.target.files[0] });
     };
 
@@ -26,23 +24,18 @@ class FileUploader extends Component<props, state> {
     onFileUpload = () => {
         if (this.state.selectedFile == null) return false;
 
-        // Create an object of formData
         const formData = new FormData();
         formData.set('name',this.state.selectedFile.name);
         let split = this.state.selectedFile.name.split('.');
         formData.set('ext',split[split.length - 1]);
 
-        // Update the formData object
+        // Add file to formData
         formData.append(
             "file",
             this.state.selectedFile,
             this.state.selectedFile.name
         );
         
-        // Details of the uploaded file
-        console.log(formData);
-        
-        // Request made to the backend api
         // Send formData object
         uploadFile(formData).then((result)=>{
             this.setState({'uploaded':true,'selectedFile':null,'filekey':result.key})
@@ -50,9 +43,7 @@ class FileUploader extends Component<props, state> {
 
         })
     };
-
-    // File content to be displayed after
-    // file upload is complete
+    
     fileData = () => {
 
         if (this.state.selectedFile != null) {

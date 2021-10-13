@@ -16,9 +16,7 @@ class FileDownloader extends Component<props, state> {
     }
 
     convertFile(filename:string,arr:Buffer){
-        console.log(arr);
         var byteArray = new Uint8Array(arr);
-        console.log(byteArray);
         var a = window.document.createElement('a');
         a.href = window.URL.createObjectURL(new Blob([byteArray], { type: 'application/octet-stream' }));
         a.download = filename;
@@ -28,16 +26,14 @@ class FileDownloader extends Component<props, state> {
     }
 
     onFileKeyChange = (event:any) => {
-        console.log(event.target.value);
         this.setState({'key':event.target.value});
     }
 
     onFileDownload = () => {
         if (this.state.key != ''){
             downloadFile(this.state.key).then(value=>{
-                console.log(value);
                 this.setState({'downloaded':true,'filename':value.name});
-                this.convertFile(value.name,value.data);
+                this.convertFile(value.name,value.data.data);
             });
         }
     }
