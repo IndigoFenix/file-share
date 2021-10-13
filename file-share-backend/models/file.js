@@ -2,38 +2,47 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const fs = require('fs');
 const path = require('path');
+const baseDir = path.join(__dirname, '../uploads/');
 
 const schema = new Schema({
     name: { type: String },
-    size: { type: Number },
-    ext: { type: String }
+    key: { type: String, index: true, unique: true },
+    ext: { type: String },
+    date: { type: Date, default: Date.now() }
 });
 
-schema.methods.saveData = function (data) {
+schema.methods.uploadData = function (data) {
     return new Promise((resolve,reject)=>{
-        let baseDir = path.join(__dirname, '../uploads/');
-        fs.open(baseDir + this._id + '.' + this.ext, 'wx', (err, file) => {
-            console.log('opened file',file);
-            if (err) reject(err.message);
-            else {
-                var fileBuffer = Buffer.from(data);
-                console.log('writing file',fileBuffer);
-                fs.writeFile(file, fileBuffer, (err) => {
-                    if (err) reject(err.message);
-                })
-                fs.close();
+        fs.rename(data.path, path.join(baseDir, this.key + '.' + this.ext), (err) => {
+            if (err){
+                reject(err.message);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+};
+
+schema.methods.downloadData = function () {
+    return new Promise((resolve,reject)=>{
+        fs.readFile(path.join(baseDir + this.key + '.' + this.ext), (err, data) => {
+            if (err) {
+                reject(err.message);
+            } else {
                 resolve(data);
             }
         })
     });
-};
+}
 
-schema.methods.getData = function () {
+schema.methods.deleteData = function () {
     return new Promise((resolve,reject)=>{
-        let baseDir = path.join(__dirname, '../uploads/');
-        fs.readFile(baseDir + this._id + '.' + this.ext, (err, data) => {
-            if (err) reject(err.message);
-            else resolve(data);
+        fs.unlink(path.join(baseDir + this.key + '.' + this.ext), (err) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                resolve(true);
+            }
         })
     });
 }

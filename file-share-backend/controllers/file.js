@@ -33,7 +33,7 @@ exports.create = async(req, res, next) => {
 
 exports.get = async(req, res, next) => {
 	try {
-		let response = await fileService.findOne(req.params.id);
+		let response = await fileService.getByKey(req.params.key);
 		if (response.success) {
 			res.status(200).json(response.result);
 		} else {
