@@ -16,7 +16,9 @@ class FileDownloader extends Component<props, state> {
     }
 
     convertFile(filename:string,arr:Buffer){
-        var byteArray = new Uint32Array(arr);
+        console.log(arr);
+        var byteArray = new Uint8Array(arr);
+        console.log(byteArray);
         var a = window.document.createElement('a');
         a.href = window.URL.createObjectURL(new Blob([byteArray], { type: 'application/octet-stream' }));
         a.download = filename;
