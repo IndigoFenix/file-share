@@ -43,6 +43,7 @@ exports.findByKey = async(key) => {
         let data = await file.downloadData();
         return {
             'name':file.name,
+            'type':file.type,
             'data':data
         };
     } else {
