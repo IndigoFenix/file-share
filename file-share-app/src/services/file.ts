@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 const APIEndpoint = process.env.REACT_APP_API;
 
 const options = {
@@ -10,13 +10,13 @@ const options = {
     },
 };
 
-export function uploadFile(data:any){
+export function uploadFile(data:any): Promise<{'key':string}>{
     return new Promise((resolve,reject)=>{
         axios.post(APIEndpoint+"/file", data, {'headers': {
             'Content-Type': 'multipart/form-data'
-          }}).then(result=>{
+          }}).then((result:AxiosResponse<any>)=>{
             console.log(result);
-            resolve(result);
+            resolve(result.data);
         }).catch(error=>{
             console.error(error);
             reject(error.message);
@@ -24,11 +24,10 @@ export function uploadFile(data:any){
     })
 }
 
-export function downloadFile(id:string){
+export function downloadFile(id:string): Promise<{'name':string,'data':Buffer}>{
     return new Promise((resolve,reject)=>{
-        axios.get(APIEndpoint+"/file/"+id).then(result=>{
-            console.log(result);
-            resolve(result);
+        axios.get(APIEndpoint+"/file/"+id).then((result:AxiosResponse<any>)=>{
+            resolve(result.data);
         }).catch(error=>{
             console.error(error);
             reject(error.message);

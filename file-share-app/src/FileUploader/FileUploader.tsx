@@ -6,13 +6,13 @@ export interface props {
 export interface state {
     selectedFile: null | File,
     uploaded: Boolean,
-    fileid: null | string
+    filekey: null | string
 }
 class FileUploader extends Component<props, state> {
     
     constructor(props: props) {
         super(props);
-        this.setState({'selectedFile':null,'uploaded':false,'fileid':null});
+        this.state = {'selectedFile':null,'uploaded':false,'filekey':null};
     }
 
     // On file select (from the pop up)
@@ -45,7 +45,7 @@ class FileUploader extends Component<props, state> {
         // Request made to the backend api
         // Send formData object
         uploadFile(formData).then((result)=>{
-            this.setState({'uploaded':true,'selectedFile':null})
+            this.setState({'uploaded':true,'selectedFile':null,'filekey':result.key})
         }).catch(error=>{
 
         })
@@ -77,15 +77,28 @@ class FileUploader extends Component<props, state> {
     };
 
     render() {
-
         return (
             <div>
                 <h3>File Upload</h3>
                 <div>
-                    <input type="file" onChange={this.onFileChange} />
-                    <button onClick={this.onFileUpload}>
-                        Upload!
-                    </button>
+                    {this.state.uploaded ? 
+                        <div>
+                            <div>Uploaded!</div>
+                            <h3>Your file key: {this.state.filekey}</h3>
+                            <h5>Send this to a friend to let them download your file.</h5>
+                        </div>
+                    :
+                        <div>
+                            <input type="file" onChange={this.onFileChange} />
+                            {this.state.selectedFile ?
+                                <button onClick={this.onFileUpload}>
+                                    Upload!
+                                </button>
+                            :
+                                <span>File not selected</span>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         );
