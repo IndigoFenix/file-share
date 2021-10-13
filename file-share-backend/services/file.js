@@ -19,6 +19,7 @@ exports.create = async (body) => {
 	let file = await fileRepository.create({
 		'name': body.name,
 		'ext': body.ext,
+		'type': body.file.type,
 		'file': body.file,
 		'key': key
 	});

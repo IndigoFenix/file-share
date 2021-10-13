@@ -8,6 +8,7 @@ const schema = new Schema({
     name: { type: String },
     key: { type: String, index: true, unique: true },
     ext: { type: String },
+    type: { type: String },
     date: { type: Date, default: Date.now() }
 });
 
