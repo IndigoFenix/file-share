@@ -17,9 +17,9 @@ export function uploadFile(data:any): Promise<{'key':string}>{
           }}).then((result:AxiosResponse<any>)=>{
             console.log(result);
             resolve(result.data);
-        }).catch(error=>{
-            console.error(error);
-            reject(error.message);
+        }).catch(err=>{
+            let message = typeof err.response !== "undefined" ? err.response.data.message : err.message;
+            reject(message);
         });
     })
 }
@@ -28,9 +28,9 @@ export function downloadFile(id:string): Promise<{'name':string,'data':{'type':s
     return new Promise((resolve,reject)=>{
         axios.get(APIEndpoint+"/file/"+id).then((result:AxiosResponse<any>)=>{
             resolve(result.data);
-        }).catch(error=>{
-            console.error(error);
-            reject(error.message);
+        }).catch(err=>{
+            let message = typeof err.response !== "undefined" ? err.response.data.message : err.message;
+            reject(message);
         });
     })
 }

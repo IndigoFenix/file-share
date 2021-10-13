@@ -6,13 +6,18 @@ export interface props {
 export interface state {
     selectedFile: null | File,
     uploaded: Boolean,
-    filekey: null | string
+    filekey: null | string,
+    error: null | string
 }
 class FileUploader extends Component<props, state> {
     
     constructor(props: props) {
         super(props);
-        this.state = {'selectedFile':null,'uploaded':false,'filekey':null};
+        this.state = {'selectedFile':null,'uploaded':false,'filekey':null,'error':null};
+    }
+
+    clearFile = () => {
+        this.setState({'selectedFile':null,'uploaded':false,'filekey':null,'error':null});
     }
 
     // On file select
@@ -24,6 +29,7 @@ class FileUploader extends Component<props, state> {
     onFileUpload = () => {
         if (this.state.selectedFile == null) return false;
 
+        //Create the form and set basic fields
         const formData = new FormData();
         formData.set('name',this.state.selectedFile.name);
         let split = this.state.selectedFile.name.split('.');
@@ -40,31 +46,8 @@ class FileUploader extends Component<props, state> {
         uploadFile(formData).then((result)=>{
             this.setState({'uploaded':true,'selectedFile':null,'filekey':result.key})
         }).catch(error=>{
-
+            this.setState({'error':error});
         })
-    };
-    
-    fileData = () => {
-
-        if (this.state.selectedFile != null) {
-
-            return (
-                <div>
-                    <h2>File Details:</h2>
-
-                    <p>File Name: {this.state.selectedFile.name}</p>
-                    <p>File Type: {this.state.selectedFile.type}</p>
-
-                </div>
-            );
-        } else {
-            return (
-                <div>
-                    <br />
-                    <h4>Choose before Pressing the Upload button</h4>
-                </div>
-            );
-        }
     };
 
     render() {
@@ -77,6 +60,9 @@ class FileUploader extends Component<props, state> {
                             <div>Uploaded!</div>
                             <h3>Your file key: {this.state.filekey}</h3>
                             <h5>Send this to a friend to let them download your file.</h5>
+                            <button onClick={this.clearFile}>
+                                Upload new file
+                            </button>
                         </div>
                     :
                         <div>
@@ -88,6 +74,7 @@ class FileUploader extends Component<props, state> {
                             :
                                 <span>File not selected</span>
                             }
+                            {this.state.error ? <div className="error">{this.state.error}</div> : ''}
                         </div>
                     }
                 </div>

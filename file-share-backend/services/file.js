@@ -37,7 +37,7 @@ exports.getByKey = async (key) => {
 	try {
 		let obj = await fileRepository.findByKey(key);
 		if (obj) return { 'success': true, 'result': obj };
-		else return { 'success': false, 'error': 404, 'message': 'file ' + id + ' not found ' };
+		else return { 'success': false, 'error': 404, 'message': 'file ' + key + ' not found ' };
 	} catch (error) {
 		return { 'success': false, 'error': 500, 'message': error.message }
 	}

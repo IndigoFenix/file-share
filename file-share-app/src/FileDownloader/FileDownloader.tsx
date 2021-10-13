@@ -7,15 +7,17 @@ export interface state {
     'key': string,
     'downloaded':Boolean,
     'filename':string | null,
+    'error':string | null
 }
 class FileDownloader extends Component<props, state> {
     
     constructor(props: props) {
         super(props);
-        this.setState({'key': '','downloaded':false,'filename':null});
+        this.state = {'key': '','downloaded':false,'filename':null,'error':null};
     }
 
-    convertFile(filename:string,arr:Buffer){
+    //Converts 
+    browserDownloadFile(filename:string,arr:Buffer){
         var byteArray = new Uint8Array(arr);
         var a = window.document.createElement('a');
         a.href = window.URL.createObjectURL(new Blob([byteArray], { type: 'application/octet-stream' }));
@@ -30,10 +32,13 @@ class FileDownloader extends Component<props, state> {
     }
 
     onFileDownload = () => {
+        this.setState({'downloaded':false,'filename':null,'error':null});
         if (this.state.key != ''){
             downloadFile(this.state.key).then(value=>{
-                this.setState({'downloaded':true,'filename':value.name});
-                this.convertFile(value.name,value.data.data);
+                this.setState({'downloaded':true,'filename':value.name,'error':null});
+                this.browserDownloadFile(value.name,value.data.data);
+            }).catch(error=>{
+                this.setState({'error':error})
             });
         }
     }
@@ -48,6 +53,7 @@ class FileDownloader extends Component<props, state> {
                     <button onClick={this.onFileDownload}>
                         Download
                     </button>
+                    {this.state.error ? <div className="error">{this.state.error}</div> : ''}
                 </div>
             </div>
         );
