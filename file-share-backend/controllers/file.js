@@ -1,18 +1,7 @@
 'use strict';
 
 const fileService = require('../services/file');
-const formidable = require('formidable');
-
-const parseForm = function (req){
-	return new Promise((resolve,reject)=>{
-		
-		let form = new formidable.IncomingForm();
-		form.parse(req, function(err, fields, files) {
-			if (err) reject(err.message);
-			else resolve({'fields':fields,'files':files});
-		});
-	});
-}
+const parseForm = require('../helpers/parseForm');
 
 exports.create = async(req, res, next) => {
 	try {
