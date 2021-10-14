@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { uploadFile } from '../services/file';
+import { Button, Input } from 'reactstrap';
 
 export interface props {
 }
@@ -52,25 +53,25 @@ class FileUploader extends Component<props, state> {
 
     render() {
         return (
-            <div>
-                <h3>File Upload</h3>
+            <div className="p-3">
                 <div>
                     {this.state.uploaded ? 
                         <div>
-                            <div>Uploaded!</div>
-                            <h3>Your file key: {this.state.filekey}</h3>
-                            <h5>Send this to a friend to let them download your file.</h5>
-                            <button onClick={this.clearFile}>
+                            <h3 className="text-center">File Uploaded Successfully</h3>
+                            <h4 className="text-center">Your file key: <span className="text-primary">{this.state.filekey}</span></h4>
+                            <h5 className="text-center">Send this to a friend to let them download your file.</h5>
+                            <Button onClick={this.clearFile}>
                                 Upload new file
-                            </button>
+                            </Button>
                         </div>
                     :
                         <div>
-                            <input type="file" onChange={this.onFileChange} />
+                            <h3 className="text-center">File Upload</h3>
+                            <Input type="file" onChange={this.onFileChange} />
                             {this.state.selectedFile ?
-                                <button onClick={this.onFileUpload}>
+                                <Button onClick={this.onFileUpload}>
                                     Upload!
-                                </button>
+                                </Button>
                             :
                                 <span>File not selected</span>
                             }

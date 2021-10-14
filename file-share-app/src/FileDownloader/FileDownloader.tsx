@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { downloadFile } from '../services/file';
+import { Button, Input } from 'reactstrap';
 
 export interface props {
 }
@@ -46,13 +47,13 @@ class FileDownloader extends Component<props, state> {
     render() {
 
         return (
-            <div>
-                <h3>File Download</h3>
+            <div className="p-3">
+                <h3 className="text-center pb-3">File Download</h3>
                 <div>
-                    <input type="text" onChange={this.onFileKeyChange} />
-                    <button onClick={this.onFileDownload}>
+                    <Input type="text" className='mb-3 text-center' placeholder="Enter your file key" onChange={this.onFileKeyChange} />
+                    <Button className="w-100" onClick={this.onFileDownload}>
                         Download
-                    </button>
+                    </Button>
                     {this.state.error ? <div className="error">{this.state.error}</div> : ''}
                 </div>
             </div>
