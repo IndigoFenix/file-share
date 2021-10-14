@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { downloadFile } from '../services/file';
 import { Button, Input } from 'reactstrap';
+import './FileDownloader.scss';
 
 export interface props {
 }
@@ -54,7 +55,7 @@ class FileDownloader extends Component<props, state> {
                     <Button className="w-100" onClick={this.onFileDownload}>
                         Download
                     </Button>
-                    {this.state.error ? <div className="error">{this.state.error}</div> : ''}
+                    {this.state.error ? <div className="error text-center mt-2">{this.state.error}</div> : ''}
                 </div>
             </div>
         );

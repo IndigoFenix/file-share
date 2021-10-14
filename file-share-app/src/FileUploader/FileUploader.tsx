@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, RefObject } from 'react';
 import { uploadFile } from '../services/file';
 import { Button, Input } from 'reactstrap';
+import './FileUploader.scss';
 
 export interface props {
 }
@@ -11,14 +12,24 @@ export interface state {
     error: null | string
 }
 class FileUploader extends Component<props, state> {
+
+    fileButtonRef:RefObject<HTMLInputElement>
     
     constructor(props: props) {
         super(props);
+        this.fileButtonRef = React.createRef();
         this.state = {'selectedFile':null,'uploaded':false,'filekey':null,'error':null};
     }
 
     clearFile = () => {
         this.setState({'selectedFile':null,'uploaded':false,'filekey':null,'error':null});
+    }
+
+    fileSelectButtonClick = (event:any) => {
+        if (this.fileButtonRef.current){
+            console.log(this.fileButtonRef.current);
+            this.fileButtonRef.current.click();
+        }
     }
 
     // On file select
@@ -58,24 +69,31 @@ class FileUploader extends Component<props, state> {
                     {this.state.uploaded ? 
                         <div>
                             <h3 className="text-center">File Uploaded Successfully</h3>
-                            <h4 className="text-center">Your file key: <span className="text-primary">{this.state.filekey}</span></h4>
+                            <h4 className="text-center">Your file key is:</h4>
+                            <h1 className="text-center text-primary">{this.state.filekey}</h1>
                             <h5 className="text-center">Send this to a friend to let them download your file.</h5>
-                            <Button onClick={this.clearFile}>
+                            <Button className="w-100" onClick={this.clearFile}>
                                 Upload new file
                             </Button>
                         </div>
                     :
                         <div>
                             <h3 className="text-center">File Upload</h3>
-                            <Input type="file" onChange={this.onFileChange} />
+                            <input ref={this.fileButtonRef} className="hide" type="file" onChange={this.onFileChange} />
+                            <Button className="w-100" onClick={this.fileSelectButtonClick}>
+                                {this.state.selectedFile ? 'Change File' : 'Select File'}
+                            </Button>
                             {this.state.selectedFile ?
-                                <Button onClick={this.onFileUpload}>
-                                    Upload!
-                                </Button>
+                                <div>
+                                    <h5 className="text-center my-2">{this.state.selectedFile.name}</h5>
+                                    <Button className="w-100 bg-primary" onClick={this.onFileUpload}>
+                                        Upload!
+                                    </Button>
+                                </div>
                             :
-                                <span>File not selected</span>
+                                <h5 className="text-center mt-2">File not selected</h5>
                             }
-                            {this.state.error ? <div className="error">{this.state.error}</div> : ''}
+                            {this.state.error ? <div className="error text-center mt-2">{this.state.error}</div> : ''}
                         </div>
                     }
                 </div>

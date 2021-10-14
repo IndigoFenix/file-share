@@ -21,18 +21,27 @@ class Main extends React.Component<props, state> {
 
     }
     render() {
-        return <div>
-            <h1>Welcome to the File Sharing tool</h1>
-            <Popup trigger={<Button>Upload File</Button>} modal nested>
-                <div className="modal-inner">
-                        <FileUploader></FileUploader>
+        return <div className="container">
+            <div className="card mt-5 p-5">
+            <h1 className="mb-5">Welcome to the File Sharing tool</h1>
+            <div className="row">
+                <div className="col-6">
+                    <Popup trigger={<Button className="mb-3 bg-primary p-5">Upload File</Button>} modal nested>
+                        <div className="modal-inner">
+                                <FileUploader></FileUploader>
+                        </div>
+                    </Popup>
                 </div>
-            </Popup>
-            <Popup trigger={<Button>Download File</Button>} modal nested>
-                <div className="modal-inner">
-                    <FileDownloader></FileDownloader>
+                <div className="col-6">
+                    <Popup trigger={<Button className="p-5">Download File</Button>} modal nested>
+                        <div className="modal-inner">
+                            <FileDownloader></FileDownloader>
+                        </div>
+                    </Popup>
                 </div>
-            </Popup>
+            </div>
+                
+            </div>
         </div>
     }
 }
